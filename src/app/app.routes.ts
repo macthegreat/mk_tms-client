@@ -10,6 +10,10 @@ import("./features/student-dashboard/student-dashboard.component").then(
 {
 path: 'courses/:id',
 loadComponent: () => import('./features/course-detail/course-detail')
-.then(m => m.CourseDetail) }
+.then(m => m.CourseDetail) },
+{
+path: 'enroll',
+loadComponent: () => import('./features/enrollment-form/enrollment-form')
+.then(m => m.EnrollmentForm) }
 ];
 
