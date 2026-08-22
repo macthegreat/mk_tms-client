@@ -33,7 +33,12 @@ path: 'enrollments', loadComponent: () =>
 import('./features/enrollment-lis/enrollment-lis') 
 .then(m => m.EnrollmentLis)
 },
-{ path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+{ path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+{
+path: 'grade-submission', loadComponent: () =>
+import('./features/grade-submission/grade-submission.component') .then(m => m.GradeSubmissionComponent)
+}
+
 
 
 

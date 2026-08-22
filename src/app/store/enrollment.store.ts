@@ -5,6 +5,8 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, concatMap, tap, catchError, EMPTY } from 'rxjs';
 import { EnrollmentService } from '../services/enrollment';
 import { Enrollment } from '../models/enrollment.model';
+import { LiveSync } from '../services/live-sync';
+import { switchMap } from 'rxjs';
 
 export const EnrollmentStore = signalStore(
   { providedIn: 'root' },
@@ -13,7 +15,17 @@ export const EnrollmentStore = signalStore(
   withComputed((store) => ({
     pendingCount: computed(() => store.entities().filter((e) => e.status === 'Pending').length),
   })),
-  withMethods((store, api = inject(EnrollmentService)) => ({
+  withMethods((store, api = inject(EnrollmentService), sync = inject(LiveSync)) => ({
+    listenForLiveUpdates: rxMethod<void>(
+      pipe(
+        tap(() => sync.connect()),
+        switchMap(() => sync.events$),
+        tap((event) => {
+          patchState(store, updateEntity({ id: event.id, changes: { status: event.status } }));
+        }),
+      ),
+    ),
+
     loadEnrollments: rxMethod<void>(
       pipe(
         tap(() => patchState(store, { isLoading: true, error: null })),
