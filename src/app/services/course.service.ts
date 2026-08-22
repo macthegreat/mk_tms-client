@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 import { Course, CourseDetail, PagedResponse } from '../models/course.model';
 
 @Injectable({
@@ -8,15 +9,19 @@ import { Course, CourseDetail, PagedResponse } from '../models/course.model';
 })
 export class CourseService {
   private http = inject(HttpClient);
+  private readonly base = `${environment.apiUrl}/courses`;
   private baseUrl = 'http://localhost:5245/api/courses';
-  getAll(page = 1, pageSize = 50) {
-    return this.http
-      .get<PagedResponse<Course>>(this.baseUrl, {
-        params: { page: page.toString(), pageSize: pageSize.toString() },
-      })
 
-      .pipe(map((p) => p.items));
-  }
+  getAll() {
+return this.http
+.get<PagedResponse<Course>>(this.base, { params: { page: '1', pageSize: '50' }
+})
+.pipe(map(response => response.items)); }
+  
+  
+  //
+
+  
   getById(id: string) {
     return this.http.get<CourseDetail>(`${this.baseUrl}/${id}`);
   }
