@@ -16,13 +16,14 @@ export class CourseService {
 return this.http
 .get<PagedResponse<Course>>(this.base, { params: { page: '1', pageSize: '50' }
 })
-.pipe(map(response => response.items)); }
-  
-  
+.pipe(map(response => response.items)); 
+} 
   //
-
-  
   getById(id: string) {
     return this.http.get<CourseDetail>(`${this.baseUrl}/${id}`);
   }
+  delete(id: number) {
+    return this.http.delete(`${this.base}/${id}`);
+  }
 }
+ 

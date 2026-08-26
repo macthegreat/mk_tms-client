@@ -8,6 +8,7 @@ import { Enrollment } from '../models/enrollment.model';
 import { LiveSync } from '../services/live-sync';
 import { switchMap } from 'rxjs';
 
+
 export const EnrollmentStore = signalStore(
   { providedIn: 'root' },
   withState({ isLoading: false, error: null as string | null }),
@@ -15,6 +16,7 @@ export const EnrollmentStore = signalStore(
   withComputed((store) => ({
     pendingCount: computed(() => store.entities().filter((e) => e.status === 'Pending').length),
   })),
+
   withMethods((store, api = inject(EnrollmentService), sync = inject(LiveSync)) => ({
     listenForLiveUpdates: rxMethod<void>(
       pipe(
@@ -40,7 +42,6 @@ export const EnrollmentStore = signalStore(
         ),
       ),
     ),
-
     approveEnrollment: rxMethod<string>(
       pipe(
         tap((id) => {
