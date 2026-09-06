@@ -5,6 +5,8 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { CourseService } from '../../services/course.service';
 import { Injectable } from '@angular/core';
 
+import { AuthService } from '../../services/auth.service';
+
 @Component({
   selector: 'app-student-dashboard',
   standalone: true,
@@ -20,7 +22,10 @@ import { Injectable } from '@angular/core';
 
 export class StudentDashboardComponent {
   private api = inject(CourseService);
-  studentName = signal('Liya Kebede');
+  private auth = inject(AuthService);
+ studentName = computed(() =>
+  this.auth.currentUser()?.displayName || 'Student'
+);
   earnedCredits = signal(45);
   //   selectedCourse = signal<Course | null>(null);
   //   sampleCourse: Course = {

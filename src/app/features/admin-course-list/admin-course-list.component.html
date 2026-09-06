@@ -1,0 +1,22 @@
+<section>
+  <h1>Admin - Courses</h1>
+
+  @if (error) {
+    <p>{{ error }}</p>
+  }
+
+  @if (courses.length === 0 && !error) {
+    <p>No courses found.</p>
+  }
+
+  @for (course of courses; track course.id) {
+    <article>
+      <h2>{{ course.code }} - {{ course.title }}</h2>
+
+      <p>
+        Enrollments: {{ course.enrollmentCount }} /
+        {{ course.maxCapacity }}
+      </p>
+    </article>
+  }
+</section>
